@@ -1,4 +1,5 @@
 const puppeteer = require("puppeteer")
+const https = require('https')
 const log = require("SyntheticsLogger")
 const path = require("path")
 const fs = require('fs')
@@ -27,6 +28,51 @@ exports.getPage = async () => {
     this.page = await this.browser.newPage()
   }
   return this.page
+}
+
+exports.executeHttpStep = async (stepName, requestOptions, callback = null, stepConfig = null) => {
+  index++;
+
+  let currIdx = index
+  let name = ""
+
+  if (stepName !== null) {
+    name = `-${stepName}`
+  }
+
+  log.info(`executeStep "${currIdx}${name}" start`)
+
+  if (callback === null) {
+    callback = async (res) => {
+      if (res.statusCode >= 400) {
+        e = `Request failed, statusCode: ${res.statusCode}`
+        log.error(e)
+        throw e
+      }
+    }
+  }
+
+  const start = Date.now()
+
+  try {
+    const req = https.request(requestOptions, callback)
+
+    req.on('error', (e) => {
+      log.error(e)
+      throw e
+    })
+    req.end()
+    
+    log.info(`executeStep "${currIdx}${name}" succeeded`)
+  } catch (e) {
+    log.info(e)
+    log.info(`executeStep "${currIdx}${name}" failed`)
+    throw e
+  } finally {
+    const end = Date.now()
+    const d = end - start
+    log.info(`${name}: ${Math.floor(d / 1000)} seconds`)
+  }
 }
 
 exports.executeStep = async (stepName = null, func) => {
