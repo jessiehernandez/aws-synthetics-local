@@ -1,6 +1,6 @@
 {
-  "name": "@sixleaveakkm/aws-synthetics-local",
-  "version": "0.2.0",
+  "name": "@jessiehernandez/aws-synthetics-local",
+  "version": "0.3.0",
   "description": "dev library for aws synthetics canary",
   "main": "index.js",
   "scripts": {
@@ -8,13 +8,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sixleaveakkm/aws-synthetics-local.git"
+    "url": "git+https://github.com/jessiehernandez/aws-synthetics-local.git"
   },
   "keywords": [
     "synthetics",
     "aws"
   ],
-  "author": "sixleaveakkm",
+  "author": "jessiehernandez",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/sixleaveakkm/aws-synthetics-local/issues"
