@@ -22,7 +22,7 @@
   "homepage": "https://github.com/sixleaveakkm/aws-synthetics-local#readme",
   "dependencies": {
     "puppeteer": "5.2.0",
-    "SyntheticsLogger": "npm:@sixleaveakkm/aws-synthetics-logger-local@0.1.6",
+    "SyntheticsLogger": "npm:@jessiehernandez/aws-synthetics-logger-local@0.1.7",
     "yargs": "^16.0.3"
   },
   "bin": {
