@@ -10,6 +10,30 @@ let screenShotPath = ".screenshot"
 let userAgent = "CloudWatchSynthetics-Local"
 let index = 0
 
+async function executeRequest(requestOptions, callback) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => reject('Timed out'), 30 * 1000)
+
+    req = https.request(requestOptions, res => {
+      callback(res) 
+      resolve()
+    })
+
+    req.on('error', (e) => {
+      log.error(e)
+      throw e
+    })
+
+    let body = requestOptions['body']
+
+    if (body !== undefined) {
+      req.write(body)
+    }
+
+    req.end()
+  })
+}
+
 exports.setLogLevel = log.setLogLevel
 exports.getLogLevel = log.getLogLevel
 exports.addUserAgent = async (page, userAgentString) => {
@@ -55,14 +79,7 @@ exports.executeHttpStep = async (stepName, requestOptions, callback = null, step
   const start = Date.now()
 
   try {
-    const req = https.request(requestOptions, callback)
-
-    req.on('error', (e) => {
-      log.error(e)
-      throw e
-    })
-    req.end()
-    
+    await executeRequest(requestOptions, callback)
     log.info(`executeStep "${currIdx}${name}" succeeded`)
   } catch (e) {
     log.info(e)
