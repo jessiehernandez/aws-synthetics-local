@@ -15,8 +15,8 @@ async function executeRequest(requestOptions, callback) {
     setTimeout(() => reject('Timed out'), 30 * 1000)
 
     req = https.request(requestOptions, res => {
-      callback(res) 
-      resolve()
+      let result = await callback(res) 
+      resolve(result)
     })
 
     req.on('error', (e) => {
